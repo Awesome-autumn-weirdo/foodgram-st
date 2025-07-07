@@ -1,17 +1,77 @@
-version: '3.3'
+
 services:
+  db:
+    image: postgres:13
+    container_name: foodgram-db
+    restart: always
+    environment:
+      POSTGRES_DB: db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: hope120887
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d db"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build:
+      context: ../backend
+      dockerfile: Dockerfile
+    container_name: foodgram-backend
+    restart: always
+    environment:
+      DB_NAME: db
+      DB_USER: postgres
+      DB_PASSWORD: hope120887
+      DB_HOST: db
+      DB_PORT: 5432
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "8000:8000"
+    volumes:
+      - ../backend:/app
+      - ../data:/app/data
+      - static_volume:/app/static
+      - media_volume:/app/media
+    entrypoint: /app/entrypoint.sh
+    command: >
+      sh -c "gunicorn backend.wsgi:application --bind 0.0.0.0:8000"
 
   frontend:
+    build:
+      context: ../frontend
+      dockerfile: Dockerfile
     container_name: foodgram-front
-    build: ../frontend
+    restart: always
+    ports:
+      - "3000:80"
+    environment:
+      - NODE_ENV=production
     volumes:
-      - ../frontend/:/app/result_build/
+      - frontend_build:/usr/share/nginx/html  # 🆕 добавлено
+
   nginx:
     container_name: foodgram-proxy
     image: nginx:1.25.4-alpine
     ports:
       - "80:80"
     volumes:
-      - ./nginx.conf:/etc/nginx/conf.d/default.conf
-      - ../frontend/build:/usr/share/nginx/html/
-      - ../docs/:/usr/share/nginx/html/api/docs/
+#      - static_volume:/app/static
+      - media_volume:/usr/share/nginx/html/media
+      - frontend_build:/usr/share/nginx/html  # 🆕 добавлено
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro
+    depends_on:
+      - backend
+      - frontend
+    restart: always
+
+volumes:
+  postgres_data:
+  static_volume:
+  media_volume:
+  frontend_build:  # 🆕 добавлено

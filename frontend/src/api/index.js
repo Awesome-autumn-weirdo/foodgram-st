@@ -232,13 +232,22 @@ class Api {
   }
 
   copyRecipeLink({ id }) {
-    return fetch(`/api/recipes/${id}/get-link/`, {
-      method: "GET",
-      headers: {
-        ...this._headers,
-      },
-    }).then(this.checkResponse);
-  }
+  return fetch(`/api/recipes/${id}/get-link/`, {
+    method: "GET",
+    headers: {
+      ...this._headers,
+    },
+  })
+    .then(this.checkResponse)
+    .then((data) => {
+      if (data.link) {
+        navigator.clipboard.writeText(data.link);
+        return data.link;
+      }
+      throw new Error("Ссылка не найдена");
+    });
+}
+
 
   getUser({ id }) {
     const token = localStorage.getItem("token");
