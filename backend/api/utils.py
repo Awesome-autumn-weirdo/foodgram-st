@@ -5,41 +5,49 @@ from rest_framework import status
 from recipes.models import Recipe, Subscription
 
 
-def create_object(request, pk, serializer_in, serializer_out, model):
+def create_object(request, pk, input_serializer, output_serializer, model):
     """
-    Создаёт связь: добавляет в избранное, корзину или подписки.
+    Добавление в избранное, корзину или подписки.
     """
-    if request.user.is_anonymous:
+    if not request.user.is_authenticated:
         return Response(status=status.HTTP_401_UNAUTHORIZED)
 
-    user_id = request.user.id
+    user = request.user
     obj = get_object_or_404(model, id=pk)
 
-    if model is Recipe:
-        data = {'user': user_id, 'recipe': obj.id}
+    if model == Recipe:
+        data = {
+            'user': user.id,
+            'recipe': obj.id
+        }
     else:
-        data = {'user': user_id, 'author': obj.id}
+        data = {
+            'user': user.id,
+            'author': obj.id
+        }
 
-    serializer = serializer_in(data=data)
-    serializer.is_valid(raise_exception=True)
-    serializer.save()
+    serializer = input_serializer(data=data)
+    if serializer.is_valid():
+        serializer.save()
+        result = output_serializer(obj, context={'request': request})
+        return Response(result.data, status=status.HTTP_201_CREATED)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    # Возвращаем данные уже сериализованные в нужном формате
-    return serializer_out(obj, context={'request': request})
 
-
-def delete_object(request, pk, model_object, delete_model):
+def delete_object(request, pk, model_obj, link_model):
     """
-    Удаляет связь: из избранного, корзины или подписок.
+    Удаление из избранного, корзины или подписок.
     """
-    user = request.user
-    if user.is_anonymous:
+    if not request.user.is_authenticated:
         return Response(status=status.HTTP_401_UNAUTHORIZED)
 
-    if delete_model is Subscription:
-        obj = get_object_or_404(delete_model, user=user, author=pk)
+    user = request.user
+
+    if link_model == Subscription:
+        obj = get_object_or_404(link_model, user=user, author=pk)
     else:
-        recipe = get_object_or_404(model_object, id=pk)
-        obj = get_object_or_404(delete_model, user=user, recipe=recipe)
+        recipe = get_object_or_404(model_obj, id=pk)
+        obj = get_object_or_404(link_model, user=user, recipe=recipe)
 
     obj.delete()
+    return Response(status=status.HTTP_204_NO_CONTENT)
