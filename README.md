@@ -25,8 +25,8 @@
 ### 1. Клонирование репозитория
 
 ```bash
-git clone https://github.com/<ваш-логин>/foodgram-project.git
-cd foodgram-project
+git clone https://github.com/Awesome-autumn-weirdo/foodgram-st.git
+cd foodgram-st
 ```
 
 ---
