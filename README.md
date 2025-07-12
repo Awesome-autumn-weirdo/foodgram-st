@@ -29,7 +29,6 @@ git clone https://github.com/Awesome-autumn-weirdo/foodgram-st.git
 cd foodgram-st
 ```
 
----
 
 ### 2. Пример `.env` файла
 
