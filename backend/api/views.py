@@ -1,4 +1,4 @@
-from django.db.models import Sum
+from django.db.models import Sum, F
 from django_filters.rest_framework import DjangoFilterBackend
 from django.http import HttpResponse
 
@@ -24,6 +24,8 @@ from api.serializers import (
 from api.permissions import OwnerOrReadOnly
 from api.filters import RecipeFilter
 from api.utils import create_object, delete_object
+
+from recipes.models import IngredientRecipe
 
 
 class AvatarUpdateView(generics.UpdateAPIView):
@@ -97,16 +99,17 @@ class RecipeViewSet(viewsets.ModelViewSet):
 
     @action(detail=False, methods=['get'], permission_classes=[permissions.IsAuthenticated])
     def download_shopping_cart(self, request):
-        ingredients = ShoppingCart.objects.filter(user=request.user).values_list(
-            'recipe__ingredients__name',
-            'recipe__ingredients__measurement_unit',
-            Sum('recipe__amount_ingredients__amount')
+        ingredients = (
+            IngredientRecipe.objects
+            .filter(recipe__in_carts__user=request.user)
+            .values(name=F('ingredient__name'), unit=F('ingredient__measurement_unit'))
+            .annotate(amount=Sum('amount'))
+            .order_by('name')
         )
 
-        ingredients = set(ingredients)  # Убираем дубликаты
         lines = ['Список покупок:']
-        for name, unit, amount in ingredients:
-            lines.append(f'{name} ({unit}) - {amount}')
+        for item in ingredients:
+            lines.append(f"{item['name']} ({item['unit']}) — {item['amount']}")
 
         response = HttpResponse('\n'.join(lines), content_type='text/plain')
         response['Content-Disposition'] = 'attachment; filename="shopping_list.txt"'
