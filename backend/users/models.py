@@ -1,7 +1,7 @@
 from django.contrib.auth.models import AbstractUser, Permission, Group
 from django.db import models
 
-from users.validation import validate_username
+from users.validation import is_username_ok
 
 
 class User(AbstractUser):
@@ -14,7 +14,7 @@ class User(AbstractUser):
         'Логин',
         max_length=150,
         unique=True,
-        validators=[validate_username]
+        validators=[is_username_ok]
     )
     email = models.EmailField(
         'Email',
