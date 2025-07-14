@@ -9,7 +9,6 @@ from djoser.serializers import UserSerializer as DjoserUserSerializer
 from users.models import (User, Subscription)
 
 from recipes.models import (
-    Tag,
     Ingredient,
     Recipe,
     IngredientRecipe,
@@ -85,14 +84,7 @@ class IngredientInRecipeWriteSerializer(serializers.ModelSerializer):
         fields = ('id', 'amount')
 
 
-class TagSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Tag
-        fields = ('id', 'name', 'color', 'slug')
-
-
 class RecipeGetSerializer(serializers.ModelSerializer):
-    tags = TagSerializer(many=True, read_only=True)
     author = UserSerializer(read_only=True)
     image = Base64ImageField(required=False, allow_null=True)
     ingredients = IngredientInRecipeReadSerializer(
@@ -105,7 +97,7 @@ class RecipeGetSerializer(serializers.ModelSerializer):
     class Meta:
         model = Recipe
         fields = [
-            'id', 'tags', 'author', 'ingredients',
+            'id', 'author', 'ingredients',
             'is_favorited', 'is_in_shopping_cart',
             'name', 'image', 'text', 'cooking_time',
         ]
@@ -124,11 +116,6 @@ class RecipeGetSerializer(serializers.ModelSerializer):
 
 
 class RecipeSerializer(serializers.ModelSerializer):
-    tags = serializers.PrimaryKeyRelatedField(
-        queryset=Tag.objects.all(),
-        many=True,
-        required=False
-    )
     author = UserSerializer(read_only=True)
     ingredients = IngredientInRecipeWriteSerializer(many=True)
     image = Base64ImageField()
@@ -136,7 +123,7 @@ class RecipeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Recipe
         fields = [
-            'id', 'tags', 'author',
+            'id', 'author',
             'ingredients', 'name', 'image',
             'text', 'cooking_time'
         ]
@@ -157,19 +144,13 @@ class RecipeSerializer(serializers.ModelSerializer):
         return data
 
     def create(self, validated_data):
-        tags = validated_data.pop('tags', [])
         ingredients = validated_data.pop('ingredients')
         recipe = Recipe.objects.create(**validated_data)
-        if tags:
-            recipe.tags.set(tags)
         self.create_ingredients(recipe, ingredients)
         return recipe
 
     def update(self, instance, validated_data):
-        tags = validated_data.pop('tags', None)
         ingredients = validated_data.pop('ingredients')
-        if tags is not None:
-            instance.tags.set(tags)
         IngredientRecipe.objects.filter(recipe=instance).delete()
         self.create_ingredients(instance, ingredients)
         return super().update(instance, validated_data)

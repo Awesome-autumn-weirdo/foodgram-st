@@ -3,7 +3,6 @@ from rest_framework.routers import DefaultRouter
 
 from api.views import (
     CustomUserViewSet,
-    TagViewSet,
     IngredientViewSet,
     RecipeViewSet,
     AvatarUpdateView
@@ -11,7 +10,6 @@ from api.views import (
 
 router = DefaultRouter()
 router.register(r'users', CustomUserViewSet, basename='users')
-router.register(r'tags', TagViewSet, basename='tags')
 router.register(r'ingredients', IngredientViewSet, basename='ingredients')
 router.register(r'recipes', RecipeViewSet, basename='recipes')
 

@@ -10,12 +10,12 @@ from rest_framework.pagination import PageNumberPagination
 from djoser.views import UserViewSet
 
 from recipes.models import (
-    Tag, Ingredient, Recipe, ShoppingCart, Favorite, Subscription
+    Ingredient, Recipe, ShoppingCart, Favorite, Subscription
 )
 from users.models import User
 
 from api.serializers import (
-    TagSerializer, UserSerializer, IngredientSerializer,
+    UserSerializer, IngredientSerializer,
     RecipeSerializer, RecipeGetSerializer,
     RecipeFavoriteSerializer, FavoriteSerializer,
     ShoppingCartSerializer, SubscriptionSerializer,
@@ -34,13 +34,6 @@ class AvatarUpdateView(generics.UpdateAPIView):
 
     def get_object(self):
         return self.request.user
-
-
-class TagViewSet(viewsets.ReadOnlyModelViewSet):
-    queryset = Tag.objects.all()
-    serializer_class = TagSerializer
-    pagination_class = None
-    permission_classes = [permissions.AllowAny]
 
 
 class IngredientViewSet(viewsets.ReadOnlyModelViewSet):

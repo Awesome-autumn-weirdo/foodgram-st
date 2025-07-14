@@ -1,7 +1,7 @@
 from django.contrib import admin
 from users.models import Subscription
 from .models import (
-    Ingredient, Tag, Recipe, IngredientRecipe,
+    Ingredient, Recipe, IngredientRecipe,
     Favorite, ShoppingCart
 )
 
@@ -12,17 +12,10 @@ class IngredientAdmin(admin.ModelAdmin):
     search_fields = ('name',)  # поиск по названию
 
 
-@admin.register(Tag)
-class TagAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name', 'color', 'slug')
-    search_fields = ('name',)
-
-
 @admin.register(Recipe)
 class RecipeAdmin(admin.ModelAdmin):
     list_display = ('id', 'name', 'author', 'favorites_count')
     search_fields = ('name', 'author__username')  # поиск по названию и автору
-    list_filter = ('tags',)
     readonly_fields = ('favorites_count',)
 
     def favorites_count(self, obj):

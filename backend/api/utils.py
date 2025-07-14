@@ -4,11 +4,8 @@ from rest_framework import status
 
 from recipes.models import Recipe, Subscription
 
-
+# Добавление в избранное, корзину или подписки.
 def create_object(request, pk, input_serializer, output_serializer, model):
-    """
-    Добавление в избранное, корзину или подписки.
-    """
     if not request.user.is_authenticated:
         return Response(status=status.HTTP_401_UNAUTHORIZED)
 
@@ -34,10 +31,8 @@ def create_object(request, pk, input_serializer, output_serializer, model):
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+# Удаление из избранного, корзины или подписок.
 def delete_object(request, pk, model_obj, link_model):
-    """
-    Удаление из избранного, корзины или подписок.
-    """
     if not request.user.is_authenticated:
         return Response(status=status.HTTP_401_UNAUTHORIZED)
 

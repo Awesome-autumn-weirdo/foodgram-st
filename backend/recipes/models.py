@@ -25,25 +25,6 @@ class Ingredient(models.Model):
         return f'{self.name} - {self.measurement_unit}'
 
 
-class Tag(models.Model):
-    name = models.CharField('Название', max_length=200, unique=True)
-    color = models.CharField(
-        'Цвет',
-        max_length=7,
-        validators=[HEX_COLOR_VALIDATOR],
-        default='#FF0000'
-    )
-    slug = models.SlugField('Слаг', max_length=200, unique=True)
-
-    class Meta:
-        ordering = ['name']
-        verbose_name = 'Тег'
-        verbose_name_plural = 'Теги'
-
-    def __str__(self):
-        return self.name
-
-
 class Recipe(models.Model):
     name = models.CharField('Название', max_length=200)
     image = models.ImageField('Изображение', upload_to='recipes/images')
@@ -57,10 +38,6 @@ class Recipe(models.Model):
         through='IngredientRecipe',
         verbose_name='Ингредиенты',
         related_name='ingredient_recipes'
-    )
-    tags = models.ManyToManyField(
-        Tag, verbose_name='Теги',
-        related_name='recipes'
     )
     cooking_time = models.PositiveSmallIntegerField(
         'Время приготовления (мин)',
@@ -153,4 +130,3 @@ class ShoppingCart(models.Model):
 
     def __str__(self):
         return f'{self.user} :: {self.recipe}'
-
