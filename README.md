@@ -7,7 +7,6 @@
 * формировать список покупок,
 * подписываться на других авторов рецептов.
 
----
 
 ## 🚀 Технологии
 
@@ -20,35 +19,29 @@
 * JWT (djoser)
 * drf-spectacular (OpenAPI-документация)
 
----
 
 ## ⚙️ Быстрый старт для локальной разработки
 
 ### 1. Клонирование репозитория
 
 ```bash
-git clone https://github.com/<ваш-логин>/foodgram-project.git
-cd foodgram-project
+git clone https://github.com/Awesome-autumn-weirdo/foodgram-st.git
+cd foodgram-st
 ```
 
----
 
 ### 2. Пример `.env` файла
 
 Создай файл `.env` в папке `infra/` со следующим содержимым:
 
 ```env
-SECRET_KEY=your_secret_key_here
-DEBUG=True
-DB_ENGINE=django.db.backends.postgresql
-DB_NAME=foodgram
-POSTGRES_USER=foodgram_user
-POSTGRES_PASSWORD=foodgram_password
+DB_NAME=db
+POSTGRES_USER=postgres
+POSTGRES_PASSWORD=db_password
 DB_HOST=db
 DB_PORT=5432
 ```
 
----
 
 ### 3. Запуск проекта в Docker
 
@@ -56,7 +49,6 @@ DB_PORT=5432
 docker-compose up --build
 ```
 
----
 
 ### 4. Выполнение миграций
 
@@ -64,7 +56,6 @@ docker-compose up --build
 docker-compose exec backend python manage.py migrate
 ```
 
----
 
 ### 5. Создание суперпользователя
 
@@ -72,7 +63,6 @@ docker-compose exec backend python manage.py migrate
 docker-compose exec backend python manage.py createsuperuser
 ```
 
----
 
 ### 6. Сбор статики
 
@@ -80,7 +70,6 @@ docker-compose exec backend python manage.py createsuperuser
 docker-compose exec backend python manage.py collectstatic --noinput
 ```
 
----
 
 ### 7. Доступ к приложению
 
