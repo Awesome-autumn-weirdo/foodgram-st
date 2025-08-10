@@ -1,78 +1,96 @@
-from django.contrib.auth.models import AbstractUser, Permission, Group
 from django.db import models
-
+from django.contrib.auth.models import AbstractUser, Group, Permission
+from django.utils.translation import gettext_lazy as _
 from users.validation import is_username_ok
 
 
-class User(AbstractUser):
-    avatar = models.ImageField(
-        upload_to='users/avatars/',
-        blank=True,
-        null=True
+class CustomUser(AbstractUser):
+    """
+    Расширенная модель пользователя с использованием email в качестве логина,
+    добавлением аватара и настройкой групп и прав.
+    """
+    email = models.EmailField(
+        _('Электронная почта'),
+        max_length=254,
+        unique=True
     )
     username = models.CharField(
-        'Логин',
+        _('Имя пользователя'),
         max_length=150,
         unique=True,
         validators=[is_username_ok]
     )
-    email = models.EmailField(
-        'Email',
-        max_length=254,
-        unique=True
+    first_name = models.CharField(_('Имя'), max_length=150)
+    last_name = models.CharField(_('Фамилия'), max_length=150)
+    avatar = models.ImageField(
+        _('Аватар'),
+        upload_to='profiles/avatars/',
+        blank=True,
+        null=True
     )
-    first_name = models.CharField('Имя', max_length=150)
-    last_name = models.CharField('Фамилия', max_length=150)
 
     groups = models.ManyToManyField(
         Group,
-        related_name='custom_user_set',
-        verbose_name='Группы',
+        verbose_name=_('Группы пользователя'),
         blank=True,
-        help_text='Группы, к которым принадлежит пользователь.'
+        related_name='custom_users',
+        related_query_name='custom_user',
+        help_text=_('Группы, в которых состоит пользователь')
     )
     user_permissions = models.ManyToManyField(
         Permission,
-        related_name='custom_user_permissions',
-        verbose_name='Права доступа',
+        verbose_name=_('Права пользователя'),
         blank=True,
-        help_text='Конкретные разрешения для этого пользователя.'
+        related_name='custom_users_permissions',
+        related_query_name='custom_user_permission',
+        help_text=_('Права, назначенные напрямую')
     )
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['username', 'first_name', 'last_name']
 
     class Meta:
+        db_table = 'custom_users'
         ordering = ['username']
-        verbose_name = 'Пользователь'
-        verbose_name_plural = 'Пользователи'
+        verbose_name = _('Пользователь')
+        verbose_name_plural = _('Пользователи')
 
     def __str__(self):
-        return self.username
+        return f"{self.username} ({self.email})"
 
 
-class Subscription(models.Model):
-    user = models.ForeignKey(
-        User,
+class Follow(models.Model):
+    """
+    Модель для подписок между пользователями.
+    Обеспечивает уникальность пары подписчик-автор.
+    """
+    subscriber = models.ForeignKey(
+        CustomUser,
         on_delete=models.CASCADE,
-        related_name='subscriptions',  # пользователь подписан на авторов
-        verbose_name='Подписчик'
+        related_name='subscriptions',
+        verbose_name=_('Подписчик')
     )
     author = models.ForeignKey(
-        User,
+        CustomUser,
         on_delete=models.CASCADE,
-        related_name='subscribers',  # у автора есть подписчики
-        verbose_name='Автор'
+        related_name='subscribers',
+        verbose_name=_('Автор')
     )
-    date_added = models.DateTimeField(
-        auto_now_add=True,
-        verbose_name='Дата добавления'
+    created_at = models.DateTimeField(
+        _('Дата подписки'),
+        auto_now_add=True
     )
 
     class Meta:
-        unique_together = ('user', 'author')
-        verbose_name = 'Подписка'
-        verbose_name_plural = 'Подписки'
+        constraints = [
+            models.UniqueConstraint(
+                fields=['subscriber', 'author'],
+                name='unique_subscription'
+            )
+        ]
+        ordering = ['-created_at']
+        verbose_name = _('Подписка')
+        verbose_name_plural = _('Подписки')
 
     def __str__(self):
-        return f'{self.user} подписан на {self.author}'
+        return f"{self.subscriber.username} подписан на {self.author.username}"

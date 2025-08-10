@@ -1,18 +1,19 @@
 from django.urls import include, path
-from rest_framework.routers import DefaultRouter
-from .views import AvatarUpdateView
-from api.views import CustomUserViewSet, IngredientViewSet, RecipeViewSet
 
-app_name = 'api'
+from .urls_users import urlpatterns as user_urls, user_router_urls
+from .urls_recipes import recipe_router_urls
+from .urls_auth import urlpatterns as auth_urls
 
-router = DefaultRouter()
-router.register('users', CustomUserViewSet, basename='users')
-router.register('ingredients', IngredientViewSet, basename='ingredient')
-router.register('recipes', RecipeViewSet, basename='recipe')
+app_name = "api"
 
 urlpatterns = [
-    path('', include(router.urls)),
-    path('', include('djoser.urls')),
-    path('users/me/avatar/', AvatarUpdateView.as_view(), name='user-avatar'),
-    path('auth/', include('djoser.urls.authtoken')),
+    # Роутеры от пользователей и рецептов
+    *user_router_urls,
+    *recipe_router_urls,
+
+    # Пути, специфичные для пользователей
+    *user_urls,
+
+    # Подключение авторизации
+    *auth_urls,
 ]

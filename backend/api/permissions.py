@@ -2,12 +2,16 @@ from rest_framework import permissions
 
 
 class OwnerOrReadOnly(permissions.BasePermission):
-    """ Только автор может изменять и добавлять объекты. """
+    """Разрешение: только создатель объекта может его изменять."""
 
     def has_permission(self, request, view):
-        return (request.method in permissions.SAFE_METHODS
-                or request.user.is_authenticated)
+        # Разрешаем безопасные методы всем, остальные — только аутентифицированным
+        if request.method in permissions.SAFE_METHODS:
+            return True
+        return request.user and request.user.is_authenticated
 
     def has_object_permission(self, request, view, obj):
-        return (request.method in permissions.SAFE_METHODS
-                or obj.author == request.user)
+        # Для чтения разрешаем всем, для изменений — только автору
+        if request.method in permissions.SAFE_METHODS:
+            return True
+        return obj.author == request.user

@@ -133,7 +133,7 @@ MEDIA_ROOT = '/app/media'    # Абсолютный путь в контейне
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-AUTH_USER_MODEL = 'users.User'
+AUTH_USER_MODEL = 'users.CustomUser'
 
 INTERNAL_IPS = [
     '127.0.0.1',

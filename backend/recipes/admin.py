@@ -1,7 +1,7 @@
 from django.contrib import admin
-from users.models import Subscription
+from users.models import Follow
 from .models import (
-    Ingredient, Recipe, IngredientRecipe,
+    Ingredient, Recipe, RecipeIngredient,
     Favorite, ShoppingCart
 )
 
@@ -23,14 +23,14 @@ class RecipeAdmin(admin.ModelAdmin):
     favorites_count.short_description = 'Добавлений в избранное'
 
 
-@admin.register(IngredientRecipe)
-class IngredientRecipeAdmin(admin.ModelAdmin):
+@admin.register(RecipeIngredient)
+class RecipeIngredientAdmin(admin.ModelAdmin):
     list_display = ('id', 'recipe', 'ingredient', 'amount')
 
 
 @admin.register(Favorite)
 class FavoriteAdmin(admin.ModelAdmin):
-    list_display = ('user', 'recipe', 'date_added')
+    list_display = ('user', 'recipe', 'added_at')
     search_fields = ('user__username', 'recipe__name')
 
 
@@ -40,7 +40,7 @@ class ShoppingCartAdmin(admin.ModelAdmin):
     search_fields = ('user__username', 'recipe__name')
 
 
-@admin.register(Subscription)
-class SubscriptionAdmin(admin.ModelAdmin):
-    list_display = ('user', 'author', 'date_added')
-    search_fields = ('user__username', 'author__username')
+@admin.register(Follow)
+class FollowAdmin(admin.ModelAdmin):
+    list_display = ('subscriber', 'author', 'created_at')
+    search_fields = ('subscriber__username', 'author__username')

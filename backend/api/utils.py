@@ -2,47 +2,53 @@ from django.shortcuts import get_object_or_404
 from rest_framework.response import Response
 from rest_framework import status
 
-from recipes.models import Recipe, Subscription
+from recipes.models import Recipe
+from users.models import Follow
 
-# Добавление в избранное, корзину или подписки.
-def create_object(request, pk, input_serializer, output_serializer, model):
-    if not request.user.is_authenticated:
+
+def create_object(request, pk, input_serializer, output_serializer, base_model):
+    """
+    Универсальный метод добавления объекта:
+    - в избранное
+    - в корзину
+    - в подписки
+    """
+    user = request.user
+    if not user.is_authenticated:
         return Response(status=status.HTTP_401_UNAUTHORIZED)
 
+    target = get_object_or_404(base_model, id=pk)
+
+    payload = {
+        "user": user.id,
+        "recipe" if base_model is Recipe else "author": target.id
+    }
+
+    serializer = input_serializer(data=payload)
+    if not serializer.is_valid():
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    serializer.save()
+    output_data = output_serializer(target, context={"request": request})
+    return Response(output_data.data, status=status.HTTP_201_CREATED)
+
+
+def delete_object(request, pk, target_model, relation_model):
+    """
+    Универсальное удаление из:
+    - избранного
+    - корзины
+    - подписок
+    """
     user = request.user
-    obj = get_object_or_404(model, id=pk)
-
-    if model == Recipe:
-        data = {
-            'user': user.id,
-            'recipe': obj.id
-        }
-    else:
-        data = {
-            'user': user.id,
-            'author': obj.id
-        }
-
-    serializer = input_serializer(data=data)
-    if serializer.is_valid():
-        serializer.save()
-        result = output_serializer(obj, context={'request': request})
-        return Response(result.data, status=status.HTTP_201_CREATED)
-    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
-# Удаление из избранного, корзины или подписок.
-def delete_object(request, pk, model_obj, link_model):
-    if not request.user.is_authenticated:
+    if not user.is_authenticated:
         return Response(status=status.HTTP_401_UNAUTHORIZED)
 
-    user = request.user
-
-    if link_model == Subscription:
-        obj = get_object_or_404(link_model, user=user, author=pk)
+    if relation_model is Follow:
+        link = get_object_or_404(relation_model, user=user, author_id=pk)
     else:
-        recipe = get_object_or_404(model_obj, id=pk)
-        obj = get_object_or_404(link_model, user=user, recipe=recipe)
+        recipe_instance = get_object_or_404(target_model, id=pk)
+        link = get_object_or_404(relation_model, user=user, recipe=recipe_instance)
 
-    obj.delete()
+    link.delete()
     return Response(status=status.HTTP_204_NO_CONTENT)
