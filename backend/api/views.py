@@ -132,6 +132,7 @@ class CustomUserViewSet(UserViewSet):
     """Пользовательский ViewSet с поддержкой подписок."""
     queryset = CustomUser.objects.all()
     serializer_class = UserSerializer
+    permission_classes = [permissions.AllowAny]
 
     def _handle_subscription(self, request, author_id):
         author = CustomUser.objects.filter(pk=author_id).first()
