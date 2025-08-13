@@ -1,5 +1,6 @@
 from django.db.models import Sum
 from django.http import HttpResponse
+from django.urls import reverse
 from rest_framework import viewsets, permissions, status, generics
 from rest_framework.decorators import action
 from rest_framework.response import Response
@@ -112,6 +113,19 @@ class RecipeViewSet(viewsets.ModelViewSet):
         response = HttpResponse(content, content_type='text/plain')
         response['Content-Disposition'] = 'attachment; filename="shopping_list.txt"'
         return response
+
+    @action(
+        detail=True,
+        methods=["get"],
+        permission_classes=[permissions.AllowAny],
+        url_path='get-link'
+    )
+    def get_link(self, request, pk=None):
+        recipe = self.get_object()
+        url = request.build_absolute_uri(
+            reverse('api:recipes-detail', args=[recipe.id])  # <-- добавляем namespace 'api'
+        )
+        return Response({"link": url}, status=status.HTTP_200_OK)
 
 
 class CustomUserViewSet(UserViewSet):
