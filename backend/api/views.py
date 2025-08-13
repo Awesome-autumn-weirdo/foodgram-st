@@ -9,13 +9,21 @@ from djoser.views import UserViewSet
 
 from recipes.models import Ingredient, Recipe, ShoppingCart, Favorite, RecipeIngredient
 from users.models import CustomUser, Follow
-from api.serializers import (
-    UserSerializer, IngredientSerializer, RecipeSerializer,
-    RecipeGetSerializer, RecipeFavoriteSerializer,
-    FavoriteSerializer, ShoppingCartSerializer,
-    FollowSerializer, FollowReadSerializer,
-    AvatarSerializer
+from users.serializers import (
+    UserSerializer,
+    AvatarSerializer,
+    FollowSerializer,
+    FollowReadSerializer,
 )
+from recipes.serializers import (
+    IngredientSerializer,
+    RecipeSerializer,
+    RecipeGetSerializer,
+    RecipeFavoriteSerializer,
+    FavoriteSerializer,
+    ShoppingCartSerializer,
+)
+
 from api.permissions import OwnerOrReadOnly
 from api.filters import RecipeFilter
 
