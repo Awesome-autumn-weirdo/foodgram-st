@@ -17,6 +17,7 @@
 * Docker, Docker Compose
 * Gunicorn + Nginx
 * JWT (djoser)
+* drf-spectacular (OpenAPI-документация)
 
 
 ## ⚙️ Быстрый старт для локальной разработки
@@ -45,6 +46,7 @@ DB_PORT=5432
 ### 3. Запуск проекта в Docker
 
 ```bash
+docker-compose down
 docker-compose up --build
 ```
 
@@ -52,6 +54,7 @@ docker-compose up --build
 ### 4. Выполнение миграций
 
 ```bash
+docker-compose exec backend python manage.py makemigrations     
 docker-compose exec backend python manage.py migrate
 ```
 
@@ -69,8 +72,16 @@ docker-compose exec backend python manage.py createsuperuser
 docker-compose exec backend python manage.py collectstatic --noinput
 ```
 
+### 7. Загрузка ингредиентов и тестовых данных
 
-### 7. Доступ к приложению
+```bash
+docker compose exec backend python manage.py load_ingredients    
+docker compose exec backend python manage.py load_test_data   
+``` 
+
+
+### 8. Доступ к приложению
 
 * 🌐 Приложение: [http://localhost/](http://localhost/)
+* 📄 Документация OpenAPI: [http://localhost/api/docs/](http://localhost/api/docs/)
 * 🔐 Админка: [http://localhost/admin/](http://localhost/admin/)
