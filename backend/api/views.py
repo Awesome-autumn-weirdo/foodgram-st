@@ -24,8 +24,8 @@ from recipes.serializers import (
     ShoppingCartSerializer,
 )
 
-from api.permissions import OwnerOrReadOnly
-from api.filters import RecipeFilter
+from api.utils.permissions import OwnerOrReadOnly
+from api.utils.filters import RecipeFilter
 
 
 class AvatarUpdateView(generics.UpdateAPIView):
