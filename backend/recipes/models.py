@@ -1,11 +1,7 @@
 from django.db import models
-from django.core.validators import MinValueValidator, RegexValidator
+from django.core.validators import MinValueValidator
 from users.models import CustomUser
 
-HEX_COLOR_VALIDATOR = RegexValidator(
-    regex=r'^#([A-Fa-f0-9]{6})$',
-    message='Цвет должен быть в формате HEX, например: #AABBCC.'
-)
 
 COOKING_TIME_ERROR = 'Время приготовления не может быть меньше 1 минуты.'
 AMOUNT_ERROR = 'Количество не может быть меньше 1.'

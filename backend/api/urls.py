@@ -1,5 +1,3 @@
-from django.urls import include, path
-
 from .urls_users import urlpatterns as user_urls, user_router_urls
 from .urls_recipes import recipe_router_urls
 from .urls_auth import urlpatterns as auth_urls
