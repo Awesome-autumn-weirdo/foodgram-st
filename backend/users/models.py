@@ -26,7 +26,8 @@ class CustomUser(AbstractUser):
         _('Аватар'),
         upload_to='profiles/avatars/',
         blank=True,
-        null=True
+        null=True,
+        default='recipes/images/default.jpg'
     )
 
     groups = models.ManyToManyField(
@@ -57,6 +58,11 @@ class CustomUser(AbstractUser):
 
     def __str__(self):
         return f"{self.username} ({self.email})"
+
+    def save(self, *args, **kwargs):
+        if not self.avatar:
+            self.avatar = 'recipes/images/default.jpg'
+        super().save(*args, **kwargs)
 
 
 class Follow(models.Model):
