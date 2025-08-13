@@ -1,0 +1,518 @@
+[
+  {
+  "model": "users.customuser",
+  "pk": 1,
+  "fields": {
+    "email": "alice@example.com",
+    "username": "alice",
+    "first_name": "Alice",
+    "last_name": "Wonderland",
+    "password": "PastaCarbonara42!",
+    "avatar": "recipes/images/default.jpg",
+    "is_staff": true,
+    "is_superuser": true,
+    "is_active": true
+  }
+},
+{
+  "model": "users.customuser",
+  "pk": 2,
+  "fields": {
+    "email": "bob@example.com",
+    "username": "bob",
+    "first_name": "Bob",
+    "last_name": "Builder",
+    "password": "DjangoRec1pes#",
+    "avatar": "recipes/images/default.jpg",
+    "is_staff": false,
+    "is_superuser": false,
+    "is_active": true
+  }
+},
+
+  {
+    "model": "users.follow",
+    "pk": 1,
+    "fields": {
+      "subscriber": 2,
+      "author": 1,
+      "created_at": "2025-08-13T12:00:00Z"
+    }
+  },
+  {
+    "model": "recipes.ingredient",
+    "pk": 1,
+    "fields": {
+      "name": "соль",
+      "measurement_unit": "г"
+    }
+  },
+  {
+    "model": "recipes.ingredient",
+    "pk": 2,
+    "fields": {
+      "name": "сахар",
+      "measurement_unit": "г"
+    }
+  },
+  {
+    "model": "recipes.ingredient",
+    "pk": 3,
+    "fields": {
+      "name": "картофель",
+      "measurement_unit": "г"
+    }
+  },
+  {
+    "model": "recipes.ingredient",
+    "pk": 4,
+    "fields": {
+      "name": "морковь",
+      "measurement_unit": "г"
+    }
+  },
+  {
+    "model": "recipes.ingredient",
+    "pk": 5,
+    "fields": {
+      "name": "курица",
+      "measurement_unit": "г"
+    }
+  },
+  {
+    "model": "recipes.ingredient",
+    "pk": 6,
+    "fields": {
+      "name": "макаронные изделия",
+      "measurement_unit": "г"
+    }
+  },
+  {
+    "model": "recipes.recipe",
+    "pk": 4,
+    "fields": {
+      "name": "Овощное рагу",
+      "image": "recipes/images/vegetable_stew.jpg",
+      "description": "Рагу из картофеля, моркови и соли.",
+      "author": 2,
+      "cooking_time": 30,
+      "pub_date": "2025-08-13T12:15:00Z"
+    }
+  },
+  {
+    "model": "recipes.recipe",
+    "pk": 5,
+    "fields": {
+      "name": "Сладкая паста",
+      "image": "recipes/images/sweet_pasta.jpg",
+      "description": "Паста с сахаром и сливочным маслом.",
+      "author": 1,
+      "cooking_time": 20,
+      "pub_date": "2025-08-13T12:20:00Z"
+    }
+  },
+  {
+    "model": "recipes.recipe",
+    "pk": 6,
+    "fields": {
+      "name": "Картофельное пюре с морковью",
+      "image": "recipes/images/mashed_potatoes.jpg",
+      "description": "Пюре из картофеля и моркови с солью.",
+      "author": 2,
+      "cooking_time": 15,
+      "pub_date": "2025-08-13T12:25:00Z"
+    }
+  },
+  {
+    "model": "recipes.recipeingredient",
+    "pk": 8,
+    "fields": {
+      "recipe": 4,
+      "ingredient": 3,
+      "amount": 300
+    }
+  },
+  {
+    "model": "recipes.recipeingredient",
+    "pk": 9,
+    "fields": {
+      "recipe": 4,
+      "ingredient": 4,
+      "amount": 150
+    }
+  },
+  {
+    "model": "recipes.recipeingredient",
+    "pk": 10,
+    "fields": {
+      "recipe": 4,
+      "ingredient": 1,
+      "amount": 5
+    }
+  },
+  {
+    "model": "recipes.recipeingredient",
+    "pk": 11,
+    "fields": {
+      "recipe": 5,
+      "ingredient": 2,
+      "amount": 20
+    }
+  },
+  {
+    "model": "recipes.recipeingredient",
+    "pk": 12,
+    "fields": {
+      "recipe": 5,
+      "ingredient": 6,
+      "amount": 150
+    }
+  },
+  {
+    "model": "recipes.recipeingredient",
+    "pk": 13,
+    "fields": {
+      "recipe": 6,
+      "ingredient": 3,
+      "amount": 200
+    }
+  },
+  {
+    "model": "recipes.recipeingredient",
+    "pk": 14,
+    "fields": {
+      "recipe": 6,
+      "ingredient": 4,
+      "amount": 100
+    }
+  },
+  {
+    "model": "recipes.favorite",
+    "pk": 3,
+    "fields": {
+      "user": 1,
+      "recipe": 4,
+      "added_at": "2025-08-13T12:40:00Z"
+    }
+  },
+  {
+    "model": "recipes.favorite",
+    "pk": 4,
+    "fields": {
+      "user": 2,
+      "recipe": 5,
+      "added_at": "2025-08-13T12:45:00Z"
+    }
+  },
+  {
+    "model": "recipes.shoppingcart",
+    "pk": 3,
+    "fields": {
+      "user": 1,
+      "recipe": 5
+    }
+  },
+  {
+    "model": "recipes.shoppingcart",
+    "pk": 4,
+    "fields": {
+      "user": 2,
+      "recipe": 6
+    }
+  },
+  {
+    "model": "recipes.recipe",
+    "pk": 1,
+    "fields": {
+      "name": "Сладкий суп",
+      "image": "recipes/images/soup.jpg",
+      "description": "Простой сладкий суп с сахаром и солью.",
+      "author": 1,
+      "cooking_time": 15,
+      "pub_date": "2025-08-13T12:00:00Z"
+    }
+  },
+  {
+    "model": "recipes.recipe",
+    "pk": 2,
+    "fields": {
+      "name": "Куриный суп с овощами",
+      "image": "recipes/images/chicken_soup.jpg",
+      "description": "Домашний суп из курицы, картофеля и моркови.",
+      "author": 2,
+      "cooking_time": 40,
+      "pub_date": "2025-08-13T12:05:00Z"
+    }
+  },
+  {
+    "model": "recipes.recipe",
+    "pk": 3,
+    "fields": {
+      "name": "Паста с курицей",
+      "image": "recipes/images/chicken_pasta.jpg",
+      "description": "Паста с кусочками курицы и солью.",
+      "author": 1,
+      "cooking_time": 25,
+      "pub_date": "2025-08-13T12:10:00Z"
+    }
+  },
+  {
+    "model": "recipes.recipe",
+    "pk": 7,
+    "fields": {
+      "name": "Курица с морковью",
+      "image": "recipes/images/chicken_carrot.jpg",
+      "description": "Жареная курица с морковью и солью.",
+      "author": 1,
+      "cooking_time": 35,
+      "pub_date": "2025-08-13T12:50:00Z"
+    }
+  },
+  {
+    "model": "recipes.recipe",
+    "pk": 8,
+    "fields": {
+      "name": "Сладкая морковь",
+      "image": "recipes/images/sweet_carrot.jpg",
+      "description": "Морковь, тушёная с сахаром.",
+      "author": 2,
+      "cooking_time": 20,
+      "pub_date": "2025-08-13T12:55:00Z"
+    }
+  },
+  {
+    "model": "recipes.recipe",
+    "pk": 9,
+    "fields": {
+      "name": "Картофель фри",
+      "image": "recipes/images/french_fries.jpg",
+      "description": "Хрустящий картофель, обжаренный с солью.",
+      "author": 1,
+      "cooking_time": 25,
+      "pub_date": "2025-08-13T13:00:00Z"
+    }
+  },
+  {
+    "model": "recipes.recipe",
+    "pk": 10,
+    "fields": {
+      "name": "Макароны с сахаром",
+      "image": "recipes/images/sweet_pasta_2.jpg",
+      "description": "Простая сладкая паста с сахаром.",
+      "author": 2,
+      "cooking_time": 15,
+      "pub_date": "2025-08-13T13:05:00Z"
+    }
+  },
+  {
+    "model": "recipes.recipe",
+    "pk": 11,
+    "fields": {
+      "name": "Овощной суп",
+      "image": "recipes/images/vegetable_soup.jpg",
+      "description": "Суп с картофелем, морковью и солью.",
+      "author": 1,
+      "cooking_time": 30,
+      "pub_date": "2025-08-13T13:10:00Z"
+    }
+  },
+  {
+    "model": "recipes.recipe",
+    "pk": 12,
+    "fields": {
+      "name": "Курица с макаронами",
+      "image": "recipes/images/chicken_pasta_2.jpg",
+      "description": "Паста с курицей и солью.",
+      "author": 2,
+      "cooking_time": 40,
+      "pub_date": "2025-08-13T13:15:00Z"
+    }
+  },
+  {
+    "model": "recipes.recipeingredient",
+    "pk": 15,
+    "fields": {"recipe": 7, "ingredient": 5, "amount": 250}
+  },
+  {
+    "model": "recipes.recipeingredient",
+    "pk": 16,
+    "fields": {"recipe": 7, "ingredient": 4, "amount": 100}
+  },
+  {
+    "model": "recipes.recipeingredient",
+    "pk": 17,
+    "fields": {"recipe": 8, "ingredient": 4, "amount": 200}
+  },
+  {
+    "model": "recipes.recipeingredient",
+    "pk": 18,
+    "fields": {"recipe": 8, "ingredient": 2, "amount": 15}
+  },
+  {
+    "model": "recipes.recipeingredient",
+    "pk": 19,
+    "fields": {"recipe": 9, "ingredient": 3, "amount": 300}
+  },
+  {
+    "model": "recipes.recipeingredient",
+    "pk": 20,
+    "fields": {"recipe": 9, "ingredient": 1, "amount": 5}
+  },
+  {
+    "model": "recipes.recipeingredient",
+    "pk": 21,
+    "fields": {"recipe": 10, "ingredient": 6, "amount": 200}
+  },
+  {
+    "model": "recipes.recipeingredient",
+    "pk": 22,
+    "fields": {"recipe": 10, "ingredient": 2, "amount": 20}
+  },
+  {
+    "model": "recipes.recipeingredient",
+    "pk": 23,
+    "fields": {"recipe": 11, "ingredient": 3, "amount": 150}
+  },
+  {
+    "model": "recipes.recipeingredient",
+    "pk": 24,
+    "fields": {"recipe": 11, "ingredient": 4, "amount": 100}
+  },
+  {
+    "model": "recipes.recipeingredient",
+    "pk": 25,
+    "fields": {"recipe": 12, "ingredient": 5, "amount": 200}
+  },
+  {
+    "model": "recipes.recipeingredient",
+    "pk": 26,
+    "fields": {"recipe": 12, "ingredient": 6, "amount": 150}
+  },
+  {
+    "model": "recipes.favorite",
+    "pk": 5,
+    "fields": {"user": 1, "recipe": 7, "added_at": "2025-08-13T13:20:00Z"}
+  },
+  {
+    "model": "recipes.favorite",
+    "pk": 6,
+    "fields": {"user": 2, "recipe": 8, "added_at": "2025-08-13T13:25:00Z"}
+  },
+  {
+    "model": "recipes.favorite",
+    "pk": 7,
+    "fields": {"user": 1, "recipe": 9, "added_at": "2025-08-13T13:30:00Z"}
+  },
+  {
+    "model": "recipes.shoppingcart",
+    "pk": 5,
+    "fields": {"user": 2, "recipe": 10}
+  },
+  {
+    "model": "recipes.shoppingcart",
+    "pk": 6,
+    "fields": {"user": 1, "recipe": 11}
+  },
+  {
+    "model": "recipes.shoppingcart",
+    "pk": 7,
+    "fields": {"user": 2, "recipe": 12}
+  },
+  {
+    "model": "recipes.recipeingredient",
+    "pk": 1,
+    "fields": {
+      "recipe": 1,
+      "ingredient": 1,
+      "amount": 5
+    }
+  },
+  {
+    "model": "recipes.recipeingredient",
+    "pk": 2,
+    "fields": {
+      "recipe": 1,
+      "ingredient": 2,
+      "amount": 10
+    }
+  },
+  {
+    "model": "recipes.recipeingredient",
+    "pk": 3,
+    "fields": {
+      "recipe": 2,
+      "ingredient": 5,
+      "amount": 300
+    }
+  },
+  {
+    "model": "recipes.recipeingredient",
+    "pk": 4,
+    "fields": {
+      "recipe": 2,
+      "ingredient": 3,
+      "amount": 2
+    }
+  },
+  {
+    "model": "recipes.recipeingredient",
+    "pk": 5,
+    "fields": {
+      "recipe": 2,
+      "ingredient": 4,
+      "amount": 1
+    }
+  },
+  {
+    "model": "recipes.recipeingredient",
+    "pk": 6,
+    "fields": {
+      "recipe": 3,
+      "ingredient": 6,
+      "amount": 200
+    }
+  },
+  {
+    "model": "recipes.recipeingredient",
+    "pk": 7,
+    "fields": {
+      "recipe": 3,
+      "ingredient": 5,
+      "amount": 150
+    }
+  },
+  {
+    "model": "recipes.favorite",
+    "pk": 1,
+    "fields": {
+      "user": 2,
+      "recipe": 1,
+      "added_at": "2025-08-13T12:30:00Z"
+    }
+  },
+  {
+    "model": "recipes.favorite",
+    "pk": 2,
+    "fields": {
+      "user": 1,
+      "recipe": 2,
+      "added_at": "2025-08-13T12:35:00Z"
+    }
+  },
+  {
+    "model": "recipes.shoppingcart",
+    "pk": 1,
+    "fields": {
+      "user": 2,
+      "recipe": 1
+    }
+  },
+  {
+    "model": "recipes.shoppingcart",
+    "pk": 2,
+    "fields": {
+      "user": 1,
+      "recipe": 3
+    }
+  }
+]
