@@ -17,7 +17,6 @@
 * Docker, Docker Compose
 * Gunicorn + Nginx
 * JWT (djoser)
-* drf-spectacular (OpenAPI-документация)
 
 
 ## ⚙️ Быстрый старт для локальной разработки
@@ -74,5 +73,4 @@ docker-compose exec backend python manage.py collectstatic --noinput
 ### 7. Доступ к приложению
 
 * 🌐 Приложение: [http://localhost/](http://localhost/)
-* 📄 Документация OpenAPI: [http://localhost/api/docs/](http://localhost/api/docs/)
 * 🔐 Админка: [http://localhost/admin/](http://localhost/admin/)
